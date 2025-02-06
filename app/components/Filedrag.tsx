@@ -1,14 +1,17 @@
 "use client";
-import { useState } from "react";
 
 export default function Filedrag({
   step,
+  file,
   setStep,
+  setFile
 }: {
   step: number;
+  file: File | null;
   setStep: (value: number) => void;
+  setFile: (file: File | null) => void;
 }) {
-  const [file, setFile] = useState<File | null>(null);
+
 
   function handleDragOver(e: React.DragEvent) {
     e.preventDefault();

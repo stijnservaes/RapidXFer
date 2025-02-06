@@ -5,6 +5,8 @@ import Filedrag from "./components/Filedrag";
 export default function Home() {
   // Step 0 = default, 1 = file is being dragged, 2 = file is dropped
   const [step, setStep] = useState(0);
+  const [file, setFile] = useState<File | null>(null);
+
   
   return (
     <main
@@ -12,7 +14,7 @@ export default function Home() {
     >
       <div className="flex h-full flex-col items-stretch justify-center gap-4">
         <h1 className="text-center text-2xl font-bold">Transfer Files</h1>
-        <Filedrag step={step} setStep={setStep}></Filedrag>
+        <Filedrag step={step} setStep={setStep} file={file} setFile={setFile}></Filedrag>
         <button onClick={() => setStep((prev) => prev + 1)}>Send</button>
       </div>
     </main>
