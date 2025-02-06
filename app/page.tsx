@@ -14,8 +14,8 @@ export default function Home() {
     >
       <div className="flex h-full flex-col items-stretch justify-center gap-4">
         <h1 className="text-center text-2xl font-bold">Transfer Files</h1>
-        <Filedrag step={step} setStep={setStep} file={file} setFile={setFile}></Filedrag>
-        <button onClick={() => setStep((prev) => prev + 1)}>Send</button>
+        <Filedrag step={step} setStep={setStep} file={file} setFile={setFile} />
+        <button>Send</button>
       </div>
     </main>
   );
