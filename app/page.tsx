@@ -1,10 +1,20 @@
+"use client";
+import { useState } from "react";
+import Filedrag from "./components/Filedrag";
 
 export default function Home() {
+  // Step 0 = default, 1 = file is being dragged, 2 = file is dropped
+  const [step, setStep] = useState(0);
+  
   return (
-    <div className="flex flex-col h-full justify-center gap-4">
-      <h1 className="text-center font-bold text-2xl">Transfer Files</h1>
-      <div className="outline-dashed outline-2 rounded-2xl max-h-96 p-2 flex-1">Test</div>
-      <button className="">Send</button>
-    </div>
+    <main
+      className="container h-4/5 rounded-2xl bg-zinc-200 p-14 shadow-2xl lg:max-w-3xl dark:bg-zinc-800"
+    >
+      <div className="flex h-full flex-col items-stretch justify-center gap-4">
+        <h1 className="text-center text-2xl font-bold">Transfer Files</h1>
+        <Filedrag step={step} setStep={setStep}></Filedrag>
+        <button onClick={() => setStep((prev) => prev + 1)}>Send</button>
+      </div>
+    </main>
   );
 }
