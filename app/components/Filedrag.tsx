@@ -1,19 +1,13 @@
 "use client";
 
 import { useRef } from "react";
+import { useAtom } from "jotai";
+import { fileAtom, stepAtom } from "../page";
 
-export default function Filedrag({
-  step,
-  file,
-  setStep,
-  setFile,
-}: {
-  step: number;
-  file: File | null;
-  setStep: (value: number) => void;
-  setFile: (file: File | null) => void;
-}) {
-  const fileInputRef = useRef<HTMLInputElement | null>(null)
+export default function Filedrag({}) {
+  const [step, setStep] = useAtom(stepAtom)
+  const [file, setFile] = useAtom(fileAtom)
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   function handleDragOver(e: React.DragEvent) {
     e.preventDefault();
@@ -42,14 +36,14 @@ export default function Filedrag({
   function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     if (e.target.files?.[0]) {
-      setFile(e.target.files[0])
-      setStep(2)
+      setFile(e.target.files[0]);
+      setStep(2);
     }
   }
 
   function handleClick() {
     if (step === 0) {
-      fileInputRef.current?.click()
+      fileInputRef.current?.click();
     }
   }
 
@@ -59,7 +53,7 @@ export default function Filedrag({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onClick={handleClick}
-      className={`${step !== 0 ? "bg-zinc-400 outline dark:bg-zinc-900" : "outline-dashed hover:outline outline-2 cursor-pointer hover:bg-zinc-600 hover:dark:bg-zinc-900"} flex h-28 items-center justify-center rounded-xl overflow-hidden`}
+      className={`${step !== 0 ? "bg-zinc-400 outline dark:bg-zinc-900" : "cursor-pointer outline-dashed outline-2 hover:bg-zinc-600 hover:outline hover:dark:bg-zinc-900"} flex h-28 items-center justify-center overflow-hidden rounded-xl`}
     >
       {step === 0 ? (
         <b>Click here or drag a file here...</b>
@@ -79,7 +73,11 @@ export default function Filedrag({
         <b>Error</b>
       )}
 
-      <input type="file" className="hidden" ref={fileInputRef} onChange={handleFileSelect}
+      <input
+        type="file"
+        className="hidden"
+        ref={fileInputRef}
+        onChange={handleFileSelect}
       />
     </div>
   );
