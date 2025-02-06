@@ -59,14 +59,14 @@ export default function Filedrag({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onClick={handleClick}
-      className={`${step !== 0 ? "bg-zinc-300 outline dark:bg-zinc-900" : "outline-dashed hover:outline outline-2 cursor-pointer hover:bg-zinc-300 hover:dark:bg-zinc-900"} flex h-28 items-center justify-center rounded-xl`}
+      className={`${step !== 0 ? "bg-zinc-400 outline dark:bg-zinc-900" : "outline-dashed hover:outline outline-2 cursor-pointer hover:bg-zinc-600 hover:dark:bg-zinc-900"} flex h-28 items-center justify-center rounded-xl overflow-hidden`}
     >
       {step === 0 ? (
         <b>Click here or drag a file here...</b>
       ) : step === 1 ? (
         <b>Drop</b>
       ) : step === 2 ? (
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex flex-wrap-reverse items-center justify-center gap-2">
           <button
             onClick={handleRemoveFile}
             className="font-bold text-gray-600 dark:text-gray-400"
