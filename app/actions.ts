@@ -1,7 +1,6 @@
 "use server"
 
 import { supabase } from "@/lib/supabase"
-import { randomUUID } from "crypto"
 import { z } from "zod"
 
 const uploadMetadataSchema = z.object({
