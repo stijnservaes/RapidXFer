@@ -27,8 +27,19 @@ export async function uploadMetadata(formData: FormData) {
       message: parsedData.error.errors.join(" ")
     }
   }
-
   
+  const {data: signedData, error: signedError} = await supabase.storage.from("uploadedfiles").createSignedUploadUrl(parsedData.data.fileName)
+  if (signedError) {
+    return {
+      success: false,
+      message: signedError.message
+    }
+  }
+
+  return {
+    success: true,
+    message: signedData.signedUrl
+  }
 
   return {
     success: true,

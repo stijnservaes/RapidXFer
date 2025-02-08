@@ -54,7 +54,23 @@ export default function Form() {
       const result = await uploadMetadata(formData);
       if (!result.success) {
         setError(result.message);
+        return
       }
+      const uploadResult = await fetch (result.message, {
+        method: "PUT",
+        headers: {
+          "Content-Type": file.type,
+        },
+        body: file
+      })
+
+      if (!uploadResult.ok) {
+        setError(uploadResult.statusText)
+        return
+      }
+
+      setError("Succesfully uploaded file")
+      
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
