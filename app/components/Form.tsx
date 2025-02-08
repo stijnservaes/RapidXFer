@@ -4,7 +4,7 @@ import {
   fileAtom,
   receiverMailAtom,
   senderMailAtom,
-} from "../page";
+} from "../../lib/store";
 import Filedrag from "./Filedrag";
 import { useRef, useState } from "react";
 import { uploadMetadata } from "../actions";
