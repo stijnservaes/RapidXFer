@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useAtom } from "jotai";
-import { fileAtom, stepAtom } from "../page";
+import { fileAtom, stepAtom } from "../../lib/store";
 
 export default function Filedrag({}) {
   const [step, setStep] = useAtom(stepAtom)
