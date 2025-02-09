@@ -14,13 +14,14 @@ datasource db {
 }
 
 model Metadata {
-  id           String   @id @default(uuid())
-  senderMail   String
-  receiverMail String
-  fileName     String
-  fileType     String
-  validated    Boolean  @default(false)
-  signedUrl    String?  @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id               String   @id @default(uuid())
+  senderMail       String
+  receiverMail     String
+  fileName         String
+  fileType         String
+  validated        Boolean  @default(false)
+  signedUrl        String?  @unique
+  verificationCode String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }

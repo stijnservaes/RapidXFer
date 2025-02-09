@@ -6,14 +6,18 @@ export async function createMetadata(
   fileName: string,
   fileType: string,
   signedUrl: string,
+  verificationCode: string
 ) {
-  await prisma.metadata.create({
+  const result = await prisma.metadata.create({
     data: {
       senderMail,
       receiverMail,
       fileName,
       fileType,
       signedUrl,
+      verificationCode
     },
   });
+
+  return result.id
 }

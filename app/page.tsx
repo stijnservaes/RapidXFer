@@ -4,9 +4,11 @@ import { FILE_SIZE_ATOM } from "@/lib/store";
 import Form from "./components/Form";
 import { useState } from "react";
 import { uploadMetadata } from "./actions";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const FILE_SIZE = useAtomValue(FILE_SIZE_ATOM);
+  const router = useRouter();
   const [error, setError] = useState("");
 
   async function handleSubmit(
@@ -43,26 +45,15 @@ export default function Home() {
     formData.set("fileType", file.type);
 
     try {
-      const result = await uploadMetadata(formData);
-      if (!result.success) {
-        setError(result.message);
+      const id = await uploadMetadata(formData);
+      if (!id.success) {
+        setError(id.message);
         return;
+      } else {
+        router.push(`/confirm/${id.message}`)
       }
 
-      const uploadResult = await fetch(result.message, {
-        method: "PUT",
-        headers: {
-          "Content-Type": file.type,
-        },
-        body: file,
-      });
 
-      if (!uploadResult.ok) {
-        setError(uploadResult.statusText);
-        return;
-      }
-
-      setError("Successfully uploaded file.");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

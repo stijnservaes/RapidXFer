@@ -4,6 +4,7 @@ import { supabase } from "@/lib/supabaseSetup";
 import { z } from "zod";
 import { randomUUID } from "crypto";
 import { createMetadata } from "@/lib/database";
+import { generateCode } from "@/lib/crypto";
 
 const uploadMetadataSchema = z.object({
   senderMail: z.string().email("Invalid email adress."),
@@ -40,11 +41,13 @@ export async function uploadMetadata(formData: FormData) {
       };
     }
 
-    await createMetadata(parsedData.data.senderMail, parsedData.data.receiverMail, fileName, parsedData.data.fileType, signedData.signedUrl)
+    const randomCode = generateCode()
+
+    const resultingId = await createMetadata(parsedData.data.senderMail, parsedData.data.receiverMail, fileName, parsedData.data.fileType, signedData.signedUrl, randomCode)
     
     return {
       success: true,
-      message: signedData.signedUrl,
+      message: resultingId,
     };
   } catch (e) {
     if (e instanceof Error) {
