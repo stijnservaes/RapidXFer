@@ -1,6 +1,6 @@
 "use server";
 
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabaseSetup";
 import { z } from "zod";
 import { randomUUID } from "crypto";
 import { createMetadata } from "@/lib/database";
