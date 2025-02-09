@@ -3,7 +3,7 @@
 import { supabase } from "@/lib/supabase";
 import { z } from "zod";
 import { randomUUID } from "crypto";
-import { prisma } from "@/lib/prisma";
+import { createMetadata } from "@/lib/database";
 
 const uploadMetadataSchema = z.object({
   senderMail: z.string().email("Invalid email adress."),
@@ -40,16 +40,8 @@ export async function uploadMetadata(formData: FormData) {
       };
     }
 
-    await prisma.metadata.create({
-      data: {
-        senderMail: parsedData.data.senderMail,
-        receiverMail: parsedData.data.receiverMail,
-        fileName: fileName,
-        fileType: parsedData.data.fileType,
-        signedUrl: signedData.signedUrl,
-      },
-    });
-
+    await createMetadata(parsedData.data.senderMail, parsedData.data.receiverMail, fileName, parsedData.data.fileType, signedData.signedUrl)
+    
     return {
       success: true,
       message: signedData.signedUrl,
