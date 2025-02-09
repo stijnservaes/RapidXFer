@@ -1,13 +1,15 @@
 import { useAtom, useAtomValue } from "jotai";
 import { fileAtom, receiverMailAtom, senderMailAtom } from "@/lib/store";
 import Filedrag from "./Filedrag";
-import { useRef } from "react";
+import { RefObject, useRef } from "react";
 
 interface FormProps {
   handleSubmit: (
     senderMail: string,
     receiverMail: string,
-    file: File | null
+    file: File | null,
+    senderRef: RefObject<HTMLInputElement | null>,
+    receiverRef: RefObject<HTMLInputElement | null>,
   ) => void;
   error: string;
 }
@@ -23,7 +25,9 @@ export default function Form({ handleSubmit, error }: FormProps) {
   return (
     <>
       {error && (
-        <p className="rounded-xl bg-red-700 p-2 font-bold text-white">{error}</p>
+        <p className="rounded-xl bg-red-700 p-2 font-bold text-white">
+          {error}
+        </p>
       )}
 
       <input
@@ -52,7 +56,9 @@ export default function Form({ handleSubmit, error }: FormProps) {
       />
       <Filedrag />
       <button
-        onClick={() => handleSubmit(senderMail, receiverMail, file)}
+        onClick={() =>
+          handleSubmit(senderMail, receiverMail, file, senderRef, receiverRef)
+        }
         className="w-1/4 self-center rounded-full bg-slate-800 px-4 py-2 font-bold text-white hover:bg-zinc-400 hover:text-slate-800 hover:outline hover:outline-slate-800 dark:bg-slate-500 dark:text-white dark:hover:bg-zinc-800 dark:hover:text-zinc-400 dark:hover:outline-zinc-400"
       >
         Send

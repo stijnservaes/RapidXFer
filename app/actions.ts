@@ -5,6 +5,7 @@ import { z } from "zod";
 import { randomUUID } from "crypto";
 import { createMetadata } from "@/lib/database";
 import { generateCode } from "@/lib/crypto";
+import { sendConfirmation } from "@/lib/email";
 
 const uploadMetadataSchema = z.object({
   senderMail: z.string().email("Invalid email adress."),
@@ -25,7 +26,7 @@ export async function uploadMetadata(formData: FormData) {
   if (!parsedData.success) {
     return {
       success: false,
-      message: parsedData.error.errors.join(" "),
+      message: parsedData.error.errors.map(e => e.message).join(" "),
     };
   }
 
@@ -41,10 +42,19 @@ export async function uploadMetadata(formData: FormData) {
       };
     }
 
-    const randomCode = generateCode()
+    const randomCode = generateCode();
 
-    const resultingId = await createMetadata(parsedData.data.senderMail, parsedData.data.receiverMail, fileName, parsedData.data.fileType, signedData.signedUrl, randomCode)
-    
+    const resultingId = await createMetadata(
+      parsedData.data.senderMail,
+      parsedData.data.receiverMail,
+      fileName,
+      parsedData.data.fileType,
+      signedData.signedUrl,
+      randomCode,
+    );
+
+    await sendConfirmation(parsedData.data.senderMail, randomCode);
+
     return {
       success: true,
       message: resultingId,
@@ -57,7 +67,7 @@ export async function uploadMetadata(formData: FormData) {
         message: "Database Error occurred.",
       };
     } else {
-      console.log("An unknown error occurred.");
+      console.error("An unknown error occurred.");
       return {
         success: false,
         message: "An unknown error occurred.",

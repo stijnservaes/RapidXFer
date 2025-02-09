@@ -6,3 +6,4 @@ export const fileAtom = atom<File | null>(null);
 export const senderMailAtom = atom("");
 export const receiverMailAtom = atom("");
 export const FILE_SIZE_ATOM = atom(52428800);
+export const EXPIRATION_TIME = 60*60*24;
