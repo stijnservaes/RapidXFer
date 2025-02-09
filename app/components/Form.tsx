@@ -22,8 +22,6 @@ export default function Form({ handleSubmit, error }: FormProps) {
 
   return (
     <>
-      <h1 className="text-center text-4xl font-bold">Transfer Files</h1>
-
       {error && (
         <p className="rounded-xl bg-red-700 p-2 font-bold text-white">{error}</p>
       )}

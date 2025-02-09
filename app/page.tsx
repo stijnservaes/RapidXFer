@@ -5,16 +5,18 @@ import Form from "./components/Form";
 import { useState } from "react";
 import { uploadMetadata } from "./actions";
 import { useRouter } from "next/navigation";
+import { FadeLoader } from "react-spinners";
 
 export default function Home() {
   const FILE_SIZE = useAtomValue(FILE_SIZE_ATOM);
   const router = useRouter();
   const [error, setError] = useState("");
+  const [isSending, setIsSending] = useState(false);
 
   async function handleSubmit(
     senderMail: string,
     receiverMail: string,
-    file: File | null
+    file: File | null,
   ) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -45,16 +47,17 @@ export default function Home() {
     formData.set("fileType", file.type);
 
     try {
+      setIsSending(true);
       const id = await uploadMetadata(formData);
       if (!id.success) {
         setError(id.message);
+        setIsSending(false);
         return;
       } else {
-        router.push(`/confirm/${id.message}`)
+        router.push(`/confirm/${id.message}`);
       }
-
-
     } catch (error) {
+      setIsSending(false);
       if (error instanceof Error) {
         setError(error.message);
       } else {
@@ -64,9 +67,16 @@ export default function Home() {
   }
 
   return (
-    <main className="container h-4/5 rounded-2xl bg-zinc-400 p-14 shadow-2xl lg:max-w-xl dark:bg-zinc-800">
+    <main className="container h-4/5 rounded-2xl bg-zinc-600 p-14 shadow-2xl lg:max-w-xl dark:bg-zinc-800">
       <div className="flex h-full flex-col items-stretch justify-center gap-4">
-        <Form handleSubmit={handleSubmit} error={error} />
+        <h1 className="text-center text-4xl font-bold text-white">Transfer Files</h1>
+        {isSending ? (
+          <div className="flex items-center justify-center">
+            <FadeLoader color="white" />
+          </div>
+        ) : (
+          <Form handleSubmit={handleSubmit} error={error} />
+        )}
       </div>
     </main>
   );
